@@ -19,7 +19,11 @@
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
-    "@electron-toolkit/utils": "^3.0.0"
+    "@electron-toolkit/utils": "^3.0.0",
+    "element-plus": "^2.6.2",
+    "sequelize": "^6.37.1",
+    "sqlite3": "^5.1.7",
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^1.0.2",
@@ -33,6 +37,15 @@
     "eslint-plugin-vue": "^9.26.0",
     "prettier": "^3.3.2",
     "vite": "^5.3.1",
-    "vue": "^3.4.30"
+    "vue": "^3.4.30",
+    "sequelize-auto": "^0.8.8",
+    "unplugin-auto-import": "^0.17.5",
+    "unplugin-vue-components": "^0.26.0"
+  },
+  "build": {
+    "extraResources": {
+      "from": "resources/storage/",
+      "to": "storage"
+    }
   }
 }

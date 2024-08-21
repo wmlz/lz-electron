@@ -1,6 +1,7 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { sequelizeModels } from './database/initSqlite'
 import icon from '../../resources/icon.png?asset'
 
 function createWindow() {
@@ -72,3 +73,11 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+ipcMain.handle('queryDatabase', () => {
+  return sequelizeModels.sys_config.findAll()
+})
+
+ipcMain.handle('db_insert_config', (event, configs) => {
+  console.log('bulkcreate')
+  return sequelizeModels.sys_config.bulkCreate(configs)
+})

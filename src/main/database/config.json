@@ -1,0 +1,5 @@
+{
+  "dialect": "sqlite",
+  "storage": "D:\\Projects\\electron\\lz-electron\\resources\\storage\\lzdb.db",
+  "lang": "esm"
+}

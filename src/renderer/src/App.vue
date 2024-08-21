@@ -1,24 +1,98 @@
-<script setup>
-import Versions from './components/Versions.vue'
+<!--<template>-->
+<!--  <div class="container">-->
+<!--    <h1>前端好玩</h1>-->
+<!--    <router-link to="/" style="margin-right: 10px">Login</router-link>-->
+<!--    <router-link to="/reg">Register</router-link>-->
+<!--    <hr />-->
+<!--    <router-view></router-view>-->
+<!--  </div>-->
+<!--</template>-->
+<template>
+  <div class="common-layout">
+    <el-container>
+      <el-aside width="100px">
+        <div class="bar">
+          <el-menu
+            @open="handleOpen"
+            @close="handleClose"
+            style="height: calc(100vh - 52px)"
+            :collapse="true"
+            router
+            default-active="/"
+          >
+            <el-menu-item index="/">
+              <el-icon>
+                <Bell />
+              </el-icon>
+              <span>整改通知</span>
+            </el-menu-item>
+            <el-menu-item index="/reg">
+              <el-icon>
+                <Document />
+              </el-icon>
+              <span>项目管理</span>
+            </el-menu-item>
+          </el-menu>
+        </div>
+      </el-aside>
+      <el-main>
+        <!-- 内容区域 -->
+        <div class="content">
+          <div class="main">
+            <router-view></router-view>
+          </div>
+        </div>
+      </el-main>
+    </el-container>
+  </div>
+</template>
 
-const ipcHandle = () => window.electron.ipcRenderer.send('ping')
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { Bell, Document } from '@element-plus/icons-vue'
+
+const isCollapse = ref(true)
+const handleOpen = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath)
+}
+const handleClose = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath)
+}
+
+const lztest = () => {
+  console.log(window.api)
+  window.api.lztest()
+}
 </script>
 
-<template>
-  <img alt="logo" class="logo" src="./assets/electron.svg" />
-  <div class="creator">Powered by electron-vite</div>
-  <div class="text">
-    Build an Electron app with
-    <span class="vue">Vue</span>
-  </div>
-  <p class="tip">Please try pressing <code>F12</code> to open the devTool</p>
-  <div class="actions">
-    <div class="action">
-      <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">Documentation</a>
-    </div>
-    <div class="action">
-      <a target="_blank" rel="noreferrer" @click="ipcHandle">Send IPC</a>
-    </div>
-  </div>
-  <Versions />
-</template>
+<style>
+/* 全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 容器样式 */
+.container {
+  max-width: 100vw;
+  max-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .container {
+    /* 小屏幕样式 */
+  }
+}
+
+@media (min-width: 769px) {
+  .container {
+    /* 大屏幕样式 */
+  }
+}
+</style>
