@@ -3,6 +3,12 @@ import { join } from 'path'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { sequelizeModels } from './database/initSqlite'
 import icon from '../../resources/icon.png?asset'
+import log from 'electron-log/main'
+import path from 'node:path'
+
+log.initialize()
+log.transports.file.resolvePathFn = () => path.join('', 'logs/main.log')
+log.info('Main process started')
 
 function createWindow() {
   // Create the browser window.
@@ -51,7 +57,7 @@ app.whenReady().then(() => {
   })
 
   // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
+  ipcMain.on('ping', () => log.info('pong'))
 
   createWindow()
 
@@ -77,7 +83,14 @@ ipcMain.handle('queryDatabase', () => {
   return sequelizeModels.sys_config.findAll()
 })
 
-ipcMain.handle('db_insert_config', (event, configs) => {
-  console.log('bulkcreate')
-  return sequelizeModels.sys_config.bulkCreate(configs)
+ipcMain.handle('db_insert_config', async (event, configs) => {
+  log.info('bulkcreate')
+  try {
+    await sequelizeModels.sys_config.bulkCreate(configs)
+    return true
+  } catch (error) {
+    // console.log(error)
+    log.error('insert failed!, message:', error.message, 'original:', error.original)
+    return false
+  }
 })

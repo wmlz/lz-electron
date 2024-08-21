@@ -1,5 +1,4 @@
 import { Sequelize } from 'sequelize'
-import lzdb from '../../../resources/storage/lzdb.db?asset'
 import initModels from './models/init-models'
 import { app } from 'electron'
 import path from 'node:path'
@@ -10,7 +9,7 @@ console.log('isPackaged', isPackaged)
 if (isPackaged) {
   filePath = path.resolve('./resources/storage/lzdb.db')
 } else {
-  filePath = lzdb
+  filePath = path.resolve(__dirname, '../../resources/storage/lzdb.db')
 }
 console.log('filepath', filePath)
 const sequelize = new Sequelize({
@@ -18,12 +17,11 @@ const sequelize = new Sequelize({
   storage: filePath
 })
 ;(async () => {
-  await sequelize.authenticate()
-})()
-  .then(() => {
+  try {
+    await sequelize.authenticate()
     console.log('connected to sqlite successfully')
-  })
-  .catch((error) => {
+  } catch (error) {
     console.error('connect to sqlite failed', error)
-  })
+  }
+})()
 export const sequelizeModels = initModels(sequelize)

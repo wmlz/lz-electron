@@ -38,21 +38,18 @@ const configForm = ref({
 })
 
 const insertSysConfig = async () => {
-  try {
-    const res = await window.electron.ipcRenderer.invoke('db_insert_config', [
-      {
-        name: configForm.value.name,
-        key: configForm.value.key,
-        value: configForm.value.value,
-        remark: configForm.value.remark
-      }
-    ])
+  const res = await window.electron.ipcRenderer.invoke('db_insert_config', [
+    {
+      name: configForm.value.name,
+      key: configForm.value.key,
+      value: configForm.value.value,
+      remark: configForm.value.remark
+    }
+  ])
+  if (res === true) {
     ElMessage.success('插入成功' + res)
-    console.log(res)
-  } catch (error) {
-    console.error('An error occurred:', error)
-    console.log('插入失败')
-    ElMessage.error('插入失败')
+  } else {
+    ElMessage.error('插入失败' + res)
   }
 }
 </script>
