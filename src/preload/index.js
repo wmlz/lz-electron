@@ -1,8 +1,10 @@
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-
+import { sysConfig } from '../main/ipc/sysconfig'
 // Custom APIs for renderer
-const api = {}
+const api = {
+  sysConfig: sysConfig
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

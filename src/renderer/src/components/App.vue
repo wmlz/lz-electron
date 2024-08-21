@@ -38,7 +38,7 @@ const configForm = ref({
 })
 
 const insertSysConfig = async () => {
-  const res = await window.electron.ipcRenderer.invoke('db_insert_config', [
+  const res = await window.api.sysConfig.insert([
     {
       name: configForm.value.name,
       key: configForm.value.key,

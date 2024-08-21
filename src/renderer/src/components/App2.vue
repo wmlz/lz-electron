@@ -3,16 +3,18 @@ import { onMounted, ref } from 'vue'
 
 const queryResult = ref([])
 
-function queryDatabase() {
-  window.electron.ipcRenderer
-    .invoke('queryDatabase')
-    .then((res) => {
-      // console.log('res', res)
-      queryResult.value = res.map((s) => s.dataValues)
-    })
-    .catch((err) => {
-      console.log('err', err)
-    })
+async function queryDatabase() {
+  // window.electron.ipcRenderer
+  //   .invoke('queryDatabase')
+  //   .then((res) => {
+  //     // console.log('res', res)
+  //     queryResult.value = res.map((s) => s.dataValues)
+  //   })
+  //   .catch((err) => {
+  //     console.log('err', err)
+  //   })
+  const res = await window.api.sysConfig.selectAll()
+  queryResult.value = res.map((s) => s.dataValues)
 }
 
 onMounted(queryDatabase)
