@@ -1,7 +1,7 @@
 <template>
   <div class="lock-container">
     <el-form-item label="口令" prop="password">
-      <el-input v-model="password" type="password" @keyup.enter="unlock" />
+      <el-input v-model="password" clearable type="password" @keyup.enter="unlock" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="unlock()"> 解锁</el-button>
@@ -14,6 +14,10 @@ import { ref } from 'vue'
 const password = ref('')
 
 const unlock = async () => {
+  if (!password.value) {
+    ElMessage.error('请输入口令')
+    return
+  }
   const verifyRes = await window.api.sysConfig.verifyPassword(password.value)
   if (verifyRes) {
     emit('updateLockStatus')
