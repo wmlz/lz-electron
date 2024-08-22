@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, shell, Menu, MenuItem } from 'electron'
 import { join } from 'path'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { sequelizeModels } from './database/initSqlite'
@@ -40,6 +40,24 @@ function createWindow() {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  //禁用刷新
+  const menu = new Menu()
+  menu.append(
+    new MenuItem({
+      label: 'Electron',
+      submenu: [
+        {
+          role: 'hello',
+          accelerator: process.platform === 'darwin' ? 'Cmd+R' : 'Ctrl+R',
+          click: () => {
+            console.log('reload unable!')
+          }
+        }
+      ]
+    })
+  )
+  Menu.setApplicationMenu(menu)
 }
 
 // This method will be called when Electron has finished
@@ -93,4 +111,10 @@ ipcMain.handle('db_insert_config', async (event, configs) => {
     log.error('insert failed!, message:', error.message, 'original:', error.original)
     return false
   }
+})
+
+ipcMain.handle('verifyPassword', async (event, param) => {
+  const res = await sequelizeModels.sys_config.findOne({ where: { key: 'password' } })
+  const rightPassword = res.dataValues.value
+  return rightPassword === param
 })

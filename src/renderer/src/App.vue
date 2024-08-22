@@ -24,13 +24,16 @@
               <el-icon>
                 <Bell />
               </el-icon>
-              <span>整改通知</span>
             </el-menu-item>
             <el-menu-item index="/reg">
               <el-icon>
                 <Document />
               </el-icon>
-              <span>项目管理</span>
+            </el-menu-item>
+            <el-menu-item @click="lock">
+              <el-icon>
+                <Lock />
+              </el-icon>
             </el-menu-item>
           </el-menu>
         </div>
@@ -43,14 +46,14 @@
           </div>
         </div>
       </el-main>
+      <LockPage v-if="lockStatus" @updateLockStatus="unlock" />
     </el-container>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { Bell, Document } from '@element-plus/icons-vue'
-
+import { Bell, Document, Lock } from '@element-plus/icons-vue'
 const isCollapse = ref(true)
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
@@ -59,9 +62,15 @@ const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
 
-const lztest = () => {
-  console.log(window.api)
-  window.api.lztest()
+const lockStatus = ref('1')
+
+const unlock = () => {
+  console.log('unlock')
+  lockStatus.value = ''
+}
+
+const lock = () => {
+  lockStatus.value = '1'
 }
 </script>
 
