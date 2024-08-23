@@ -43,20 +43,20 @@ function createWindow() {
 
   //禁用刷新
   const menu = new Menu()
-  menu.append(
-    new MenuItem({
-      label: 'Electron',
-      submenu: [
-        {
-          role: 'hello',
-          accelerator: process.platform === 'darwin' ? 'Cmd+R' : 'Ctrl+R',
-          click: () => {
-            console.log('reload unable!')
-          }
-        }
-      ]
-    })
-  )
+  // menu.append(
+  //   new MenuItem({
+  //     label: 'Electron',
+  //     submenu: [
+  //       {
+  //         role: 'hello',
+  //         accelerator: process.platform === 'darwin' ? 'Cmd+R' : 'Ctrl+R',
+  //         click: () => {
+  //           console.log('reload unable!')
+  //         }
+  //       }
+  //     ]
+  //   })
+  // )
   Menu.setApplicationMenu(menu)
 }
 
@@ -117,4 +117,20 @@ ipcMain.handle('verifyPassword', async (event, param) => {
   const res = await sequelizeModels.sys_config.findOne({ where: { key: 'password' } })
   const rightPassword = res.dataValues.value
   return rightPassword === param
+})
+
+ipcMain.handle('getSysConfigByKey', async (event, param) => {
+  const res = await sequelizeModels.sys_config.findOne({ where: { key: param } })
+  return res.dataValues.value
+})
+
+ipcMain.handle('setEnableLock', async (event, param) => {
+  return await sequelizeModels.sys_config.update(
+    { value: param },
+    { where: { key: 'enable_lock' } }
+  )
+})
+
+ipcMain.handle('updateLockPassword', async (event, param) => {
+  return await sequelizeModels.sys_config.update({ value: param }, { where: { key: 'password' } })
 })

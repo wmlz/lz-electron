@@ -11,6 +11,11 @@ const routes = [
     path: '/reg',
     name: 'Reg',
     component: () => import('../components/App2.vue')
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: () => import('../components/Settings.vue')
   }
 ]
 

@@ -30,13 +30,14 @@
                 <Document />
               </el-icon>
             </el-menu-item>
-            <el-menu-item @click="lock">
+            <el-menu-item index="/settings">
               <el-icon>
-                <Lock />
+                <Setting />
               </el-icon>
             </el-menu-item>
           </el-menu>
         </div>
+        <el-button size="large" circle text :icon="Lock" v-show="showLockBtn" @click="lock" />
       </el-aside>
       <el-main>
         <!-- 内容区域 -->
@@ -52,8 +53,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { Bell, Document, Lock } from '@element-plus/icons-vue'
+import { onMounted, ref } from 'vue'
+import { Bell, Document, Lock, Setting } from '@element-plus/icons-vue'
+import { sysConfigStore } from './store'
+
 const isCollapse = ref(true)
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
@@ -62,16 +65,29 @@ const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
 
-const lockStatus = ref('1')
+const lockStatus = ref(true)
+const showLockBtn = ref(false)
+
+sysConfigStore().$subscribe((mutation, state) => {
+  showLockBtn.value = state.enableLock === '1'
+})
+
+const loadEnableLock = async () => {
+  console.log('loadEnableLock')
+  const res = await window.api.sysConfig.getOneByKey('enable_lock')
+  showLockBtn.value = res === '1'
+  lockStatus.value = res === '1'
+}
 
 const unlock = () => {
-  console.log('unlock')
-  lockStatus.value = ''
+  lockStatus.value = false
 }
 
 const lock = () => {
-  lockStatus.value = '1'
+  lockStatus.value = true
 }
+
+onMounted(loadEnableLock)
 </script>
 
 <style>
