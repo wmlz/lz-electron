@@ -40,7 +40,9 @@ export default class sys_config extends Model {
       },
       {
         tableName: 'sys_config',
-        timestamps: false,
+        timestamps: true,
+        createdAt: 'create_time',
+        updatedAt: 'update_time',
         indexes: [
           {
             name: 'sqlite_autoindex_sys_config_1',
