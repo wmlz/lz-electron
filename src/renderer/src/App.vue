@@ -20,21 +20,27 @@
             router
             default-active="/"
           >
-            <el-menu-item index="/">
-              <el-icon>
-                <Bell />
-              </el-icon>
-            </el-menu-item>
-            <el-menu-item index="/reg">
-              <el-icon>
-                <Document />
-              </el-icon>
-            </el-menu-item>
-            <el-menu-item index="/settings">
-              <el-icon>
-                <Setting />
-              </el-icon>
-            </el-menu-item>
+            <el-tooltip class="box-item" effect="dark" content="新增" placement="right">
+              <el-menu-item index="/">
+                <el-icon>
+                  <Bell />
+                </el-icon>
+              </el-menu-item>
+            </el-tooltip>
+            <el-tooltip class="box-item" effect="dark" content="查询" placement="right">
+              <el-menu-item index="/reg">
+                <el-icon>
+                  <Document />
+                </el-icon>
+              </el-menu-item>
+            </el-tooltip>
+            <el-tooltip class="box-item" effect="dark" content="设置" placement="right">
+              <el-menu-item index="/settings">
+                <el-icon>
+                  <Setting />
+                </el-icon>
+              </el-menu-item>
+            </el-tooltip>
           </el-menu>
         </div>
         <el-button size="large" circle text :icon="Lock" v-show="showLockBtn" @click="lock" />

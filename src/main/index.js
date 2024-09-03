@@ -5,6 +5,7 @@ import { sequelizeModels } from './database/initSqlite'
 import icon from '../../resources/icon.png?asset'
 import log from 'electron-log/main'
 import path from 'node:path'
+import fs from 'node:fs/promises'
 
 log.initialize()
 log.transports.file.resolvePathFn = () => path.join('', 'logs/main.log')
@@ -133,4 +134,16 @@ ipcMain.handle('setEnableLock', async (event, param) => {
 
 ipcMain.handle('updateLockPassword', async (event, param) => {
   return await sequelizeModels.sys_config.update({ value: param }, { where: { key: 'password' } })
+})
+
+ipcMain.handle('copyFile', async (event, srcFile, destFile) => {
+  log.info('srcFile:', srcFile, 'destFile:', destFile)
+  try {
+    await fs.copyFile(srcFile, destFile)
+    console.log('File copied successfully')
+    return true
+  } catch (err) {
+    console.error('Error copying file:', err)
+    return false
+  }
 })

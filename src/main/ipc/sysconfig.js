@@ -6,7 +6,8 @@ export const sysConfig = {
   verifyPassword: verifyPassword,
   getOneByKey: getOneByKey,
   setEnableLock: setEnableLock,
-  updateLockPassword: updateLockPassword
+  updateLockPassword: updateLockPassword,
+  copyFile: copyFile
 }
 
 async function selectAll() {
@@ -31,4 +32,8 @@ async function setEnableLock(param) {
 
 async function updateLockPassword(param) {
   return await ipcUtils.invoke('updateLockPassword', param)
+}
+
+async function copyFile(src, dest) {
+  return await ipcUtils.invoke('copyFile', src, dest)
 }
